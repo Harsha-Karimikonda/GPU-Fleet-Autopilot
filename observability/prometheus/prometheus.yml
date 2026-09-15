@@ -13,3 +13,4 @@ scrape_configs:
         labels:
           service: "gpu-fleet-autopilot"
           engine: "rust"
+

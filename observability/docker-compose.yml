@@ -28,3 +28,4 @@ services:
       - ./grafana/dashboards:/etc/grafana/provisioning/dashboards/json:ro
     depends_on:
       - prometheus
+

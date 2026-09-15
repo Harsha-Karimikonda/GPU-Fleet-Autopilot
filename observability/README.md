@@ -60,3 +60,4 @@ If you run an existing Grafana instance:
 2. In Grafana, click **Dashboards > New > Import**.
 3. Upload [`observability/grafana/dashboards/fleet_overview.json`](./grafana/dashboards/fleet_overview.json).
 4. Select your Prometheus data source and click **Import**.
+
