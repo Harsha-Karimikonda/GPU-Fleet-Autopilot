@@ -125,7 +125,7 @@ async fn main() -> anyhow::Result<()> {
                 Cell::new("Total GPUs").fg(Color::Cyan),
                 Cell::new("Healthy").fg(Color::Green),
                 Cell::new("Degraded").fg(Color::Yellow),
-                Cell::new("At Risk").fg(Color::Ansi256(208)), // Orange
+                Cell::new("At Risk").fg(Color::DarkYellow),
                 Cell::new("Critical").fg(Color::Red),
                 Cell::new("Quarantined").fg(Color::Magenta),
             ]);
@@ -134,7 +134,7 @@ async fn main() -> anyhow::Result<()> {
                 Cell::new(res.total),
                 Cell::new(res.healthy).fg(Color::Green),
                 Cell::new(res.degraded).fg(Color::Yellow),
-                Cell::new(res.at_risk).fg(Color::Ansi256(208)),
+                Cell::new(res.at_risk).fg(Color::DarkYellow),
                 Cell::new(res.critical).fg(Color::Red),
                 Cell::new(res.quarantined).fg(Color::Magenta),
             ]));
@@ -162,7 +162,7 @@ async fn main() -> anyhow::Result<()> {
                 let status_cell = match status_str {
                     "HEALTHY" => Cell::new(status_str).fg(Color::Green),
                     "DEGRADED" => Cell::new(status_str).fg(Color::Yellow),
-                    "AT_RISK" => Cell::new(status_str).fg(Color::Ansi256(208)),
+                    "AT_RISK" => Cell::new(status_str).fg(Color::DarkYellow),
                     "CRITICAL" => Cell::new(status_str).fg(Color::Red),
                     "QUARANTINED" => Cell::new(status_str).fg(Color::Magenta),
                     _ => Cell::new(status_str),
