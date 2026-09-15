@@ -247,3 +247,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     generate_dataset(args.output, num_gpus=args.gpus, ticks=args.ticks)
+
