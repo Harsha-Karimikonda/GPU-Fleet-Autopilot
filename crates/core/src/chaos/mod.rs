@@ -1,4 +1,4 @@
-use crate::types::{Gpu, GpuStatus};
+use crate::types::Gpu;
 use rand::Rng;
 use serde::{Deserialize, Serialize};
 

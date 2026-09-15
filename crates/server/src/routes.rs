@@ -2,7 +2,7 @@ use crate::state::AppState;
 use axum::{
     extract::{Path, Query, State},
     http::StatusCode,
-    response::{Html, IntoResponse, Response},
+    response::{Html, IntoResponse},
     routing::{get, post},
     Json, Router,
 };

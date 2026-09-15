@@ -59,7 +59,7 @@ impl SimulatorEngine {
             let power_noise: f64 = norm_power.sample(&mut rng);
 
             let is_busy = gpu.allocated_job_id.is_some();
-            let base_util = if is_busy {
+            let base_util: f64 = if is_busy {
                 if gpu.active_chaos_scenario.is_some() && gpu.performance < 0.5 {
                     20.0
                 } else {

@@ -8,7 +8,7 @@ use gpu_fleet_autopilot_core::FleetEngine;
 use state::AppState;
 use std::net::SocketAddr;
 use std::time::Duration;
-use tracing::{error, info};
+use tracing::info;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 #[derive(Parser, Debug)]

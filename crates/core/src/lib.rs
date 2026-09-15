@@ -21,7 +21,7 @@ use remediation::RemediationController;
 use scheduler::SchedulerEngine;
 use simulator::SimulatorEngine;
 use telemetry::MetricsRenderer;
-use types::{Gpu, GpuStatus, Job, JobStatus, JobType};
+use types::{Gpu, GpuStatus, JobType};
 
 pub struct FleetEngine {
     pub config: AppConfig,
