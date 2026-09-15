@@ -21,3 +21,4 @@ if [ -n "$SKLEARN_LIBOMP" ] && [ -n "$XGBOOST_LIB_DIR" ]; then
 else
     echo "Warning: could not locate bundled libomp.dylib or xgboost/lib."
 fi
+
