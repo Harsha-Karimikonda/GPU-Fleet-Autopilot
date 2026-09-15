@@ -1,0 +1,282 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "liveNow": true,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "id": 100,
+      "title": "Fleet Health & Availability Overview",
+      "type": "row"
+    },
+    {
+      "id": 1,
+      "gridPos": { "h": 4, "w": 3, "x": 0, "y": 1 },
+      "title": "Total Fleet GPUs",
+      "type": "stat",
+      "targets": [{ "expr": "fleet_gpus_total", "refId": "A" }],
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "fixed", "fixedColor": "blue" } }
+      }
+    },
+    {
+      "id": 2,
+      "gridPos": { "h": 4, "w": 3, "x": 3, "y": 1 },
+      "title": "Healthy",
+      "type": "stat",
+      "targets": [{ "expr": "fleet_gpus_healthy", "refId": "A" }],
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "fixed", "fixedColor": "green" } }
+      }
+    },
+    {
+      "id": 3,
+      "gridPos": { "h": 4, "w": 3, "x": 6, "y": 1 },
+      "title": "Degraded",
+      "type": "stat",
+      "targets": [{ "expr": "fleet_gpus_degraded", "refId": "A" }],
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "fixed", "fixedColor": "yellow" } }
+      }
+    },
+    {
+      "id": 4,
+      "gridPos": { "h": 4, "w": 3, "x": 9, "y": 1 },
+      "title": "At Risk",
+      "type": "stat",
+      "targets": [{ "expr": "fleet_gpus_at_risk", "refId": "A" }],
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "fixed", "fixedColor": "orange" } }
+      }
+    },
+    {
+      "id": 5,
+      "gridPos": { "h": 4, "w": 3, "x": 12, "y": 1 },
+      "title": "Critical",
+      "type": "stat",
+      "targets": [{ "expr": "fleet_gpus_critical", "refId": "A" }],
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "fixed", "fixedColor": "red" } }
+      }
+    },
+    {
+      "id": 6,
+      "gridPos": { "h": 4, "w": 3, "x": 15, "y": 1 },
+      "title": "Quarantined",
+      "type": "stat",
+      "targets": [{ "expr": "fleet_gpus_quarantined", "refId": "A" }],
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "fixed", "fixedColor": "purple" } }
+      }
+    },
+    {
+      "id": 7,
+      "gridPos": { "h": 4, "w": 3, "x": 18, "y": 1 },
+      "title": "Availability",
+      "type": "gauge",
+      "targets": [{ "expr": "fleet_availability_ratio * 100", "refId": "A" }],
+      "fieldConfig": {
+        "defaults": {
+          "min": 0,
+          "max": 100,
+          "unit": "percent",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 90 },
+              { "color": "green", "value": 98 }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 8,
+      "gridPos": { "h": 4, "w": 3, "x": 21, "y": 1 },
+      "title": "Active Incidents",
+      "type": "stat",
+      "targets": [{ "expr": "autopilot_active_incidents", "refId": "A" }],
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "red", "value": 1 }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 5 },
+      "id": 101,
+      "title": "Thermodynamics & Power Dynamics",
+      "type": "row"
+    },
+    {
+      "id": 9,
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 6 },
+      "title": "GPU Die Temperature (°C)",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "max(dcgm_gpu_temp)", "legendFormat": "Max Temperature", "refId": "A" },
+        { "expr": "avg(dcgm_gpu_temp)", "legendFormat": "Avg Temperature", "refId": "B" },
+        { "expr": "min(dcgm_gpu_temp)", "legendFormat": "Min Temperature", "refId": "C" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "celsius",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 80 },
+              { "color": "red", "value": 92 }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 10,
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 6 },
+      "title": "Total Cluster Power Consumption (kW)",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "sum(dcgm_power_usage) / 1000", "legendFormat": "Total Fleet Power (kW)", "refId": "A" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "kw",
+          "color": { "mode": "palette-classic" }
+        }
+      }
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 14 },
+      "id": 102,
+      "title": "Thermal Throttling & Clock Frequencies",
+      "type": "row"
+    },
+    {
+      "id": 11,
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 15 },
+      "title": "SM Clock Speeds (MHz)",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "min(dcgm_sm_clock)", "legendFormat": "Min SM Clock (Throttled)", "refId": "A" },
+        { "expr": "avg(dcgm_sm_clock)", "legendFormat": "Avg SM Clock", "refId": "B" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "MHz",
+          "min": 400,
+          "max": 2100
+        }
+      }
+    },
+    {
+      "id": 12,
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 15 },
+      "title": "Compute & Memory Utilization (%)",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "fleet_utilization_ratio", "legendFormat": "Fleet Average SM Util %", "refId": "A" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "max": 100
+        }
+      }
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 23 },
+      "id": 103,
+      "title": "Semiconductor & Fabric Hardware Telemetry",
+      "type": "row"
+    },
+    {
+      "id": 13,
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 24 },
+      "title": "ECC Memory Errors (SBE & Fatal DBE)",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "sum(rate(dcgm_ecc_sbe_volatile_total[1m]))", "legendFormat": "Single-Bit ECC Errors/sec", "refId": "A" },
+        { "expr": "sum(rate(dcgm_ecc_dbe_volatile_total[1m]))", "legendFormat": "Fatal Double-Bit Errors/sec", "refId": "B" }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "reqps" }
+      }
+    },
+    {
+      "id": 14,
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 24 },
+      "title": "Interconnect CRC Storms (NVLink & RoCE)",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "sum(rate(dcgm_nvlink_error_count[1m]))", "legendFormat": "NVLink Replays/sec", "refId": "A" },
+        { "expr": "sum(rate(network_errors_total[1m]))", "legendFormat": "Fabric Drops/sec", "refId": "B" }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "reqps" }
+      }
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 32 },
+      "id": 104,
+      "title": "Degraded GPU Watchlist & Autonomous Remediations",
+      "type": "row"
+    },
+    {
+      "id": 15,
+      "gridPos": { "h": 8, "w": 16, "x": 0, "y": 33 },
+      "title": "At-Risk & Critical GPUs (Health Score < 80)",
+      "type": "table",
+      "targets": [
+        {
+          "expr": "gpu_health_score < 80",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "{{gpu_id}}",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 33 },
+      "title": "Remediations Executed",
+      "type": "stat",
+      "targets": [
+        { "expr": "autopilot_remediations_total", "refId": "A" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "fixed", "fixedColor": "purple" }
+        }
+      }
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["gpu", "autopilot", "dcgm", "fleet"],
+  "time": { "from": "now-15m", "to": "now" },
+  "timepicker": { "refresh_intervals": ["2s", "5s", "10s", "30s", "1m"] },
+  "timezone": "browser",
+  "title": "GPU Fleet Autopilot — Fleet Overview",
+  "version": 1
+}
