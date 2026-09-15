@@ -193,6 +193,7 @@
               <th>GPU ID</th>
               <th>Node</th>
               <th>Status</th>
+              <th>Active Chaos</th>
               <th>Health</th>
               <th>Temp</th>
               <th>Power</th>
@@ -200,7 +201,7 @@
             </tr>
           </thead>
           <tbody id="gpus-body">
-            <tr><td colspan="7" style="text-align:center; color: var(--text-secondary);">Loading GPU status...</td></tr>
+            <tr><td colspan="8" style="text-align:center; color: var(--text-secondary);">Loading GPU status...</td></tr>
           </tbody>
         </table>
       </div>
@@ -256,18 +257,19 @@
         document.getElementById('val-critical').innerText = data.critical;
         document.getElementById('val-quarantined').innerText = data.quarantined;
 
-        // Render watched GPUs (non-healthy or first few)
+        // Render watched GPUs (non-healthy or with active chaos first)
         const gpuRes = await fetch('/api/v1/gpus');
         if (gpuRes.ok) {
           const gpus = await gpuRes.json();
-          const nonHealthy = gpus.filter(g => g.status !== 'HEALTHY').slice(0, 8);
-          const displayGpus = nonHealthy.length > 0 ? nonHealthy : gpus.slice(0, 5);
+          const watched = gpus.filter(g => g.status !== 'HEALTHY' || g.active_chaos_scenario || g.health_score < 100.0).slice(0, 10);
+          const displayGpus = watched.length > 0 ? watched : gpus.slice(0, 6);
           const tbody = document.getElementById('gpus-body');
           tbody.innerHTML = displayGpus.map(g => `
             <tr>
               <td><strong>${g.id}</strong></td>
               <td>${g.node_id}</td>
               <td><span class="${g.status.toLowerCase().replace('_', '-')}">${g.status}</span></td>
+              <td>${g.active_chaos_scenario ? `<span class="badge" style="color:var(--accent-red);border-color:var(--accent-red);">${g.active_chaos_scenario}</span>` : `<span style="color:var(--text-secondary);">None</span>`}</td>
               <td>${g.health_score.toFixed(1)}</td>
               <td>${g.temperature.toFixed(1)}°C</td>
               <td>${g.power.toFixed(0)}W</td>
@@ -276,7 +278,7 @@
           `).join('');
         }
 
-        // Render incidents
+        // Render incidents (active + resolved)
         const incRes = await fetch('/api/v1/incidents');
         if (incRes.ok) {
           const incs = await incRes.json();
@@ -284,15 +286,34 @@
           if (incs.length === 0) {
             tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color: var(--text-secondary);">No active incidents. Fleet running optimally.</td></tr>';
           } else {
-            tbody.innerHTML = incs.slice(0, 8).map(inc => `
+            tbody.innerHTML = incs.slice(0, 8).map(inc => {
+              const stateColor = inc.state === 'RESOLVED' ? 'var(--accent-green)' : (inc.state === 'REMEDIATING' ? 'var(--accent-purple)' : 'var(--accent-blue)');
+              return `
               <tr>
                 <td><strong>${inc.id}</strong></td>
                 <td>${inc.gpu_id}</td>
-                <td><span class="badge">${inc.state}</span></td>
+                <td><span class="badge" style="color:${stateColor};border-color:${stateColor};">${inc.state}</span></td>
                 <td><span class="${inc.severity.toLowerCase()}">${inc.severity}</span></td>
                 <td>${inc.diagnosis || 'Investigating...'}</td>
                 <td>${inc.actions_taken.join(', ') || 'Evaluating rules'}</td>
               </tr>
+            `;}).join('');
+          }
+        }
+
+        // Render jobs summary
+        const jobsRes = await fetch('/api/v1/jobs');
+        if (jobsRes.ok) {
+          const jobs = await jobsRes.json();
+          const jobsDiv = document.getElementById('jobs-summary');
+          if (jobs.length === 0) {
+            jobsDiv.innerHTML = '<span style="color:var(--text-secondary);">No active jobs.</span>';
+          } else {
+            jobsDiv.innerHTML = jobs.slice(0, 5).map(j => `
+              <div style="margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid var(--border);">
+                <strong>${j.id}</strong> (${j.job_type}) - <span class="badge">${j.status}</span><br/>
+                <span style="font-size:11px;color:var(--text-secondary);">Allocated: ${j.gpu_ids.join(', ') || 'None (Migrating)'}</span>
+              </div>
             `).join('');
           }
         }

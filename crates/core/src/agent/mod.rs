@@ -24,6 +24,7 @@ pub struct RuleMatch {
 pub struct AgentEngine {
     config: AgentConfig,
     active_incidents: HashMap<String, Incident>,
+    incident_history: Vec<Incident>,
     cooldowns: HashMap<String, i64>,
     event_log: Vec<TelemetryEvent>,
     incident_counter: usize,
@@ -34,6 +35,7 @@ impl AgentEngine {
         Self {
             config,
             active_incidents: HashMap::new(),
+            incident_history: Vec::new(),
             cooldowns: HashMap::new(),
             event_log: Vec::new(),
             incident_counter: 0,
@@ -41,7 +43,11 @@ impl AgentEngine {
     }
 
     pub fn get_incidents(&self) -> Vec<Incident> {
-        self.active_incidents.values().cloned().collect()
+        let mut list: Vec<Incident> = self.active_incidents.values().cloned().collect();
+        for inc in self.incident_history.iter().rev() {
+            list.push(inc.clone());
+        }
+        list
     }
 
     pub fn get_event_log(&self) -> &[TelemetryEvent] {
@@ -319,6 +325,10 @@ impl AgentEngine {
 
                     incident.state = IncidentState::Resolved;
                     incident.resolved_at = Some(now);
+                    self.incident_history.push(incident.clone());
+                    if self.incident_history.len() > 100 {
+                        self.incident_history.remove(0);
+                    }
 
                     self.emit_event(
                         "INCIDENT_RESOLVED",

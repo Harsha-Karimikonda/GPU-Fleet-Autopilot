@@ -85,7 +85,7 @@ async fn list_gpus(
     let engine = state.engine.read();
     let fleet = engine.get_fleet();
 
-    let mut filtered: Vec<serde_json::Value> = fleet
+    let mut gpus_ref: Vec<&gpu_fleet_autopilot_core::types::Gpu> = fleet
         .iter()
         .filter(|g| {
             if let Some(ref s) = query.status {
@@ -100,14 +100,19 @@ async fn list_gpus(
             }
             true
         })
-        .map(|g| serde_json::to_value(g).unwrap())
         .collect();
 
-    if query.status.is_none() && query.node_id.is_none() && filtered.len() > 100 {
-        // Cap large responses when unconstrained to prevent high serialization payload
-        filtered.truncate(100);
+    // Prioritize non-healthy or active chaos GPUs to appear first
+    gpus_ref.sort_by_key(|g| {
+        let is_healthy = g.status == GpuStatus::Healthy && g.active_chaos_scenario.is_none();
+        (is_healthy, g.id.clone())
+    });
+
+    if query.status.is_none() && query.node_id.is_none() && gpus_ref.len() > 100 {
+        gpus_ref.truncate(100);
     }
 
+    let filtered: Vec<serde_json::Value> = gpus_ref.iter().map(|g| serde_json::to_value(g).unwrap()).collect();
     Json(filtered)
 }
 
