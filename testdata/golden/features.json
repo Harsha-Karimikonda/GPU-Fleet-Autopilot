@@ -1,0 +1,13 @@
+{
+  "features": [
+    { "name": "ewma_5m_temp", "description": "5-minute exponentially weighted moving average of GPU temperature (°C)" },
+    { "name": "ewma_15m_temp", "description": "15-minute exponentially weighted moving average of GPU temperature (°C)" },
+    { "name": "ewma_5m_ecc_rate", "description": "5-minute windowed single-bit ECC error rate" },
+    { "name": "ewma_15m_ecc_rate", "description": "15-minute windowed single-bit ECC error rate" },
+    { "name": "nvlink_error_rate", "description": "Windowed NVLink CRC error increment rate" },
+    { "name": "performance_ratio", "description": "Throughput ratio against baseline (1.0 = 100%)" },
+    { "name": "power_usage", "description": "Current power draw in Watts" },
+    { "name": "temp_power_interaction", "description": "Interaction feature: (temp / 100.0) * (power / 700.0)" }
+  ]
+}
+

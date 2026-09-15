@@ -1,0 +1,19 @@
+[package]
+name = "gpu-fleet-autopilot-core"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+serde_yaml = { workspace = true }
+rand = { workspace = true }
+rand_distr = { workspace = true }
+chrono = { workspace = true }
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+parking_lot = { workspace = true }
+tracing = { workspace = true }
+

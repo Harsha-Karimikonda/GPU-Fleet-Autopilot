@@ -1,0 +1,20 @@
+[package]
+name = "gpu-fleet-autopilot-telemetry-gen"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+default-run = "gpu-telemetry-gen"
+
+[[bin]]
+name = "gpu-telemetry-gen"
+path = "src/main.rs"
+
+[dependencies]
+gpu-fleet-autopilot-core = { path = "../core" }
+clap = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+anyhow = { workspace = true }
+chrono = { workspace = true }
+

@@ -1,0 +1,55 @@
+fleet:
+  gpu_count: 1000
+  gpus_per_node: 8
+  gpu_model: "H100"
+  tick_interval_ms: 2000          # Physics timestep (internal ODE)
+  sampling_interval_s: 30         # Telemetry sampling interval
+  warm_spare_ratio: 0.05          # 5% of fleet reserved as warm spares
+
+health:
+  weights:                         # Sum to 1.0; inputs normalized 0.0–1.0
+    temperature: 0.20
+    ecc_rate: 0.20
+    xid: 0.20
+    performance: 0.15
+    nvlink: 0.10
+    network: 0.05
+    clock_throttle: 0.10
+  thresholds:
+    healthy: 80.0
+    degraded: 60.0
+    at_risk: 40.0
+
+agent:
+  mode: "rules"
+  max_tool_calls: 10
+  evaluation_interval_s: 30
+  incident_trigger: "CRITICAL"     # Health score below 40.0 triggers incident
+  cooldown_s: 300                  # Min time before reopening incident on same GPU
+
+scheduler:
+  max_concurrent_jobs: 50
+  default_gpus_per_job: 8
+  auto_generate_jobs: true
+  migration_time_s: 120            # Simulated migration delay for job rescheduling
+  checkpoint_interval_s: 600       # Jobs checkpoint every 10 min
+
+ml:
+  model_path: "testdata/golden/failure_predictor.json"
+  features_manifest: "testdata/golden/features.json"
+  prediction_interval_s: 60
+  warm_up_s: 900                   # 15 min — suppress predictions until history buffer fills
+  enabled: true
+  prediction_horizons: [2, 6, 24]  # Hours
+
+telemetry:
+  dataset_duration_hours: 168      # 7 days
+  dataset_format: "parquet"        # parquet or csv
+  partition_by: "day"
+  schema_version: "1.0"
+
+server:
+  bind: "127.0.0.1"               # Localhost only by default
+  port: 8080
+  log_format: "json"
+

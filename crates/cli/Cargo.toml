@@ -1,0 +1,21 @@
+[package]
+name = "gpu-fleet-autopilot-cli"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+default-run = "gpu-ctl"
+
+[[bin]]
+name = "gpu-ctl"
+path = "src/main.rs"
+
+[dependencies]
+tokio = { workspace = true }
+clap = { workspace = true }
+reqwest = { workspace = true }
+comfy-table = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+anyhow = { workspace = true }
+

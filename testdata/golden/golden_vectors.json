@@ -1,0 +1,15 @@
+[
+  {
+    "description": "Healthy GPU with low temperature and no errors",
+    "features": [68.0, 67.5, 0.0, 0.0, 0.0, 1.0, 450.0, 0.437142857],
+    "raw_score": -0.8,
+    "expected_probability": 0.310025518872
+  },
+  {
+    "description": "Degraded GPU with high temperature, throttling, and ECC errors",
+    "features": [94.0, 92.0, 15.0, 12.0, 25.0, 0.70, 720.0, 0.96685714],
+    "raw_score": 5.4,
+    "expected_probability": 0.99550373
+  }
+]
+

@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Canonical Telemetry Schema v1.0",
+  "description": "Canonical schema for GPU Fleet Autopilot infrastructure telemetry",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "timestamp",
+    "gpu_id",
+    "node_id",
+    "rack_id",
+    "cluster_id",
+    "dcgm_gpu_temp",
+    "dcgm_power_usage",
+    "dcgm_gpu_utilization",
+    "dcgm_mem_copy_utilization",
+    "dcgm_sm_clock",
+    "dcgm_clock_throttle_reasons",
+    "dcgm_ecc_sbe_volatile_total",
+    "dcgm_ecc_dbe_volatile_total",
+    "dcgm_xid_errors",
+    "dcgm_nvlink_error_count",
+    "network_errors_total",
+    "performance_ratio"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0",
+      "description": "Schema version string"
+    },
+    "timestamp": {
+      "type": "integer",
+      "description": "Unix timestamp in epoch milliseconds"
+    },
+    "gpu_id": {
+      "type": "string",
+      "pattern": "^gpu-[0-9]{5}$",
+      "description": "Unique GPU identifier"
+    },
+    "node_id": {
+      "type": "string",
+      "pattern": "^node-[0-9]{3,4}$",
+      "description": "Node hosting the GPU"
+    },
+    "rack_id": {
+      "type": "string",
+      "pattern": "^rack-[0-9]{2,3}$",
+      "description": "Rack housing the node"
+    },
+    "cluster_id": {
+      "type": "string",
+      "description": "Data center cluster identifier"
+    },
+    "job_id": {
+      "type": ["string", "null"],
+      "description": "Identifier of active allocated job or null/empty if idle"
+    },
+    "dcgm_gpu_temp": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 120.0,
+      "description": "GPU die temperature in degrees Celsius (Gauge)"
+    },
+    "dcgm_power_usage": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1000.0,
+      "description": "GPU board power draw in Watts (Gauge)"
+    },
+    "dcgm_gpu_utilization": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 100.0,
+      "description": "Streaming Multiprocessor utilization percentage (Gauge)"
+    },
+    "dcgm_mem_copy_utilization": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 100.0,
+      "description": "High Bandwidth Memory (HBM) copy bandwidth utilization percentage (Gauge)"
+    },
+    "dcgm_sm_clock": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 3000,
+      "description": "Current SM clock frequency in MHz (Gauge)"
+    },
+    "dcgm_clock_throttle_reasons": {
+      "type": "integer",
+      "description": "Bitmask of active clock throttle reasons: 0=None, 1=Thermal, 2=Power, 4=Board"
+    },
+    "dcgm_ecc_sbe_volatile_total": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Cumulative single-bit ECC errors (Monotonic counter)"
+    },
+    "dcgm_ecc_dbe_volatile_total": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Cumulative double-bit uncorrectable ECC errors (Monotonic counter)"
+    },
+    "dcgm_xid_errors": {
+      "type": "integer",
+      "description": "Most recent NVIDIA driver XID error code (Point-in-time)"
+    },
+    "dcgm_nvlink_error_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Cumulative NVLink CRC/replay errors across all links (Monotonic counter)"
+    },
+    "network_errors_total": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Cumulative InfiniBand / RoCE dropped packets and retry errors (Monotonic counter)"
+    },
+    "performance_ratio": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 2.0,
+      "description": "Actual workload compute throughput divided by golden baseline (1.0 = 100%)"
+    },
+    "failure_in_next_2h": {
+      "type": "integer",
+      "enum": [0, 1],
+      "description": "Dataset label: whether terminal failure occurs within 2 hours"
+    },
+    "failure_in_next_6h": {
+      "type": "integer",
+      "enum": [0, 1],
+      "description": "Dataset label: whether terminal failure occurs within 6 hours"
+    },
+    "failure_in_next_24h": {
+      "type": "integer",
+      "enum": [0, 1],
+      "description": "Dataset label: whether terminal failure occurs within 24 hours"
+    },
+    "failure_type": {
+      "type": "string",
+      "enum": [
+        "NONE",
+        "THERMAL",
+        "ECC_MEMORY",
+        "NVLINK",
+        "XID_CRASH",
+        "STRAGGLER",
+        "NETWORK",
+        "RDMA",
+        "STORAGE",
+        "DRIVER",
+        "MEMORY_DEGRADATION"
+      ],
+      "description": "Dataset label: ground truth failure scenario type"
+    }
+  }
+}
+

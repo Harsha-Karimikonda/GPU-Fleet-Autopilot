@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Neutral Model Export Schema v1.0",
+  "description": "Neutral decision tree ensemble export format for XGBoost models evaluated in pure Rust",
+  "type": "object",
+  "required": ["schema_version", "model_type", "base_score", "objective", "num_trees", "features", "trees"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "model_type": { "type": "string", "const": "xgboost" },
+    "base_score": { "type": "number" },
+    "objective": { "type": "string", "enum": ["binary:logistic", "reg:squarederror"] },
+    "num_trees": { "type": "integer", "minimum": 1 },
+    "features": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "trees": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["nodes"],
+        "properties": {
+          "nodes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id"],
+              "properties": {
+                "id": { "type": "integer" },
+                "split_feature": { "type": "integer" },
+                "threshold": { "type": "number" },
+                "yes": { "type": "integer" },
+                "no": { "type": "integer" },
+                "missing": { "type": "integer" },
+                "leaf_value": { "type": "number" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

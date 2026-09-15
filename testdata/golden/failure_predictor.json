@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "model_type": "xgboost",
+  "base_score": 0.5,
+  "objective": "binary:logistic",
+  "num_trees": 3,
+  "features": [
+    "ewma_5m_temp",
+    "ewma_15m_temp",
+    "ewma_5m_ecc_rate",
+    "ewma_15m_ecc_rate",
+    "nvlink_error_rate",
+    "performance_ratio",
+    "power_usage",
+    "temp_power_interaction"
+  ],
+  "trees": [
+    {
+      "nodes": [
+        { "id": 0, "split_feature": 0, "threshold": 82.0, "yes": 1, "no": 2, "missing": 1 },
+        { "id": 1, "split_feature": 2, "threshold": 5.0, "yes": 3, "no": 4, "missing": 3 },
+        { "id": 2, "split_feature": 6, "threshold": 650.0, "yes": 5, "no": 6, "missing": 5 },
+        { "id": 3, "leaf_value": -1.2 },
+        { "id": 4, "leaf_value": 0.8 },
+        { "id": 5, "leaf_value": 1.5 },
+        { "id": 6, "leaf_value": 2.4 }
+      ]
+    },
+    {
+      "nodes": [
+        { "id": 0, "split_feature": 5, "threshold": 0.85, "yes": 1, "no": 2, "missing": 2 },
+        { "id": 1, "leaf_value": 1.2 },
+        { "id": 2, "split_feature": 4, "threshold": 10.0, "yes": 4, "no": 3, "missing": 3 },
+        { "id": 3, "leaf_value": -0.8 },
+        { "id": 4, "leaf_value": 0.9 }
+      ]
+    },
+    {
+      "nodes": [
+        { "id": 0, "split_feature": 7, "threshold": 0.75, "yes": 1, "no": 2, "missing": 1 },
+        { "id": 1, "leaf_value": -0.5 },
+        { "id": 2, "leaf_value": 1.8 }
+      ]
+    }
+  ]
+}
+
