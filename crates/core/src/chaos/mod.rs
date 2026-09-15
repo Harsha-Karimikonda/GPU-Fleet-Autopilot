@@ -94,12 +94,12 @@ impl ChaosEngine {
                 }
             }
             ChaosScenario::GpuThermalFailure => {
-                // Thermal paste dryout / fan failure -> R_thermal creeps up
-                gpu.thermal_resistance = (gpu.thermal_resistance + 0.015).min(0.25);
+                // Fan failure / cooling airflow collapse: R_thermal climbs to 0.45 °C/W
+                gpu.thermal_resistance = (gpu.thermal_resistance + 0.035).min(0.45);
                 // When temperature exceeds 92°C, throttling engages
                 if gpu.temperature >= 92.0 {
                     gpu.is_throttled = true;
-                    gpu.clock_throttle = 1; // Thermal bitmask
+                    gpu.clock_throttle |= 1; // Thermal bitmask
                     gpu.sm_clock = 500;
                     gpu.performance = 0.35;
                 }
